@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DataStructures;
 using DataStructures.Tree;
 
@@ -6,29 +7,41 @@ namespace Algorithms
 {
     public static class BinaryTreeTraversals
     {
-        public static void BreadthFirst<T>(this BinaryNode<T> node, Action<BinaryNode<T>> action)
+        public static IEnumerable<T> BreadthFirst<T>(this BinaryNode<T> node)
         {
-            var queue = new Queue<BinaryNode<T>>();
+            var queue = new DataStructures.Queue<BinaryNode<T>>();
             queue.Enqueue(node);
 
             while (!queue.IsEmpty())
             {
                 var currentNode = queue.Dequeue();
-                if(node.Left != null)
+                if(currentNode.Left != null)
                     queue.Enqueue(currentNode.Left);
 
-                if(node.Right != null)
+                if(currentNode.Right != null)
                     queue.Enqueue(currentNode.Right);
 
-                action(node);
+                yield return currentNode.Value;
             }
         }
 
-        public static void DepthFirst<T>(this BinaryNode<T> node, Action<BinaryNode<T>> action)
+        public static IEnumerable<T> DepthFirst<T>(this BinaryNode<T> node)
         {
-            action(node);
-            node.Left?.DepthFirst(action);
-            node.Right?.DepthFirst(action);
+            yield return node.Value;
+            var leftItems = node.Left?.DepthFirst();
+            var rightItems = node.Right?.DepthFirst();
+
+            if (leftItems != null)
+            {
+                foreach (var item in leftItems)
+                    yield return item;
+            }
+
+            if (rightItems != null)
+            {
+                foreach (var item in rightItems)
+                    yield return item;
+            }
         }
         
     }
