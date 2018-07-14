@@ -23,6 +23,7 @@ namespace DataStructures
             if (_root == null)
             {
                 _root = newItem;
+                _last = newItem;
             }
             else
             {
@@ -48,7 +49,7 @@ namespace DataStructures
             if (index == 0)
                 return currentNode;
 
-            for (var i = 1; i < index; i++)
+            for (var i = 1; i <= index; i++)
                 currentNode = currentNode.Next;
 
             return currentNode;
@@ -58,17 +59,21 @@ namespace DataStructures
         {
             var previous = node.Previous;
             var next = node.Next;
-            node.Next = null;
-            node.Previous = null;
 
-            previous.Next = next;
-            next.Previous = previous;
+            if(previous != null)
+                previous.Next = next;
+
+            if(next != null)
+                next.Previous = previous;
 
             if (node == _root)
                 _root = node.Next;
 
             if (node == _last && _root != _last)
                 _last = node.Previous;
+
+            node.Next = null;
+            node.Previous = null;
 
             _length--;
         }
