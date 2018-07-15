@@ -16,6 +16,7 @@ namespace DataStructures
         private Node<T> _head;
         private Node<T> _last;
 
+        // O(1)
         public void AddItem(T item)
         {
             var newItem = new Node<T>(item);
@@ -33,6 +34,7 @@ namespace DataStructures
             _last = newItem;
         }
 
+        // O(1)
         public void RemoveAt(int index)
         {
             // todo: validate
